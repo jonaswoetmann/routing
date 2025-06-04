@@ -32,7 +32,7 @@ obstacle_radius = 50
 
 # Angle from robot to target
 def calculate_angle(target_x, target_y):
-    global robot_x, robot_y, robot_angle
+    var = robot_x, robot_y, robot_angle
     angle_to_target = math.degrees(math.atan2(target_y - robot_y, target_x - robot_x))
     angle_difference = (angle_to_target - robot_angle + 360) % 360
     return angle_difference if angle_difference <= 180 else angle_difference - 360
