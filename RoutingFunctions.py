@@ -18,8 +18,32 @@ def update_targets_state(targets):
     global all_targets
     all_targets = targets
 
-target_x, target_y = 0, 0
-obstacle_x, obstacle_y = 0, 0
+# Global variables for current target
+target_x = None
+target_y = None
+
+# Calculate closest target
+def calculate_target():
+    if not all_targets:
+        global target_x, target_y
+        target_x, target_y = None, None
+        return target_x, target_y
+
+    closest_target = None
+    min_distance = float('inf')
+
+    for tx, ty in all_targets:
+        distance = calculate_distance(tx, ty)
+        if distance < min_distance:
+            min_distance = distance
+            closest_target = (tx, ty)
+
+    global target_x, target_y
+    if closest_target:
+        target_x, target_y = closest_target
+    else:
+        target_x, target_y = None, None
+    return target_x, target_y
 
 # Check for whether the path is blocked
 def is_path_blocked(target_x, target_y, threshold=60):
@@ -45,18 +69,3 @@ def calculate_distance(target_x, target_y):
     distance_to_target = math.sqrt((target_x - robot_x) ** 2 + (target_y - robot_y) ** 2)
     return distance_to_target
 
-# Calculate closest target
-def calculate_target():
-    if not all_targets:
-        return None
-
-    closest_target = None
-    min_distance = float('inf')
-
-    for tx, ty in all_targets:
-        distance = calculate_distance(tx, ty)
-        if distance < min_distance:
-            min_distance = distance
-            closest_target = (tx, ty)
-
-    return closest_target
